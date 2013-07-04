@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+	<body>
+		<h1>GDG Missoula URL Shortner</h1>
+		
+		{% if created %}
+		<div>
+			<h2><a href="http://{{ hostname }}/#">http://{{ hostname }}/#</a></h2>
+			<hr>
+		</div>
+		{% endif %}
+
+		<form action="/" method="POST">
+			<div>
+				<label for="text">Link</label>
+				<input type="text" name="link" id="text"></text>
+			</div>
+			<div>
+				<input type="submit" value="Shorten">
+			</div>
+		</form>
+
+		<!-- TODO: Create a list of recent shortened urls. -->
+
+	</body>
+</html>
+{% endautoescape %}
