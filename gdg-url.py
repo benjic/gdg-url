@@ -1,6 +1,8 @@
 import os
 import hashlib
 
+from models import Url
+
 import webapp2
 import jinja2
 
@@ -47,11 +49,20 @@ class RootPage(webapp2.RequestHandler):
 		# The unique hash is truncated to keep our links small.
 		url_hash = m.hexdigest()[0:10] 
 
+		# A Url model is instinated with the supplied post data. Our url 
+		# shortner uses a hash as a key to recover created urls.
+		url = Url(key_name=url_hash,
+			link=self.request.get('link'))
+
+		# Model.put() commits the model to the datastore.
+		url.put()
+
 		# In this instance the only variable is a conditional flag whether a
 		# short url has been created.
 		template_values = {
 			'created': True,
 			'hostname': os.environ.get('HTTP_HOST'),
+			'hash': url_hash
 		}
 
 		template = JINJA_ENVIRONMENT.get_template("root.html")
