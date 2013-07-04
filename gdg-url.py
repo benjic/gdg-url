@@ -32,6 +32,20 @@ class RootPage(webapp2.RequestHandler):
 		template = JINJA_ENVIRONMENT.get_template("root.html")
 		self.response.write(template.render(template_values))
 
+	# POST requests are submitted forms for short urls.
+	def post(self):
+		"""Response for POST requests."""
+
+		# In this instance the only variable is a conditional flag whether a
+		# short url has been created.
+		template_values = {
+			'created': True,
+			'hostname': os.environ.get('HTTP_HOST'),
+		}
+
+		template = JINJA_ENVIRONMENT.get_template("root.html")
+		self.response.write(template.render(template_values))
+
 # We define a global SSGIApplication that is used by our configuartion to
 # route incoming requests to the App Engine. While we are working we enable
 # debugging to promote verbosity.
