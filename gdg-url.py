@@ -1,4 +1,5 @@
 import os
+import hashlib
 
 import webapp2
 import jinja2
@@ -35,6 +36,16 @@ class RootPage(webapp2.RequestHandler):
 	# POST requests are submitted forms for short urls.
 	def post(self):
 		"""Response for POST requests."""
+
+		# The ideas behind a good hashing algorithm are complex. For
+		# this example we will only truncate the first 10 digits of
+		# of the md5 hash. This will of course have collisions but it
+		# is a problem for another day.
+		m = hashlib.md5()
+		m.update(self.request.get('link'))
+
+		# The unique hash is truncated to keep our links small.
+		url_hash = m.hexdigest()[0:10] 
 
 		# In this instance the only variable is a conditional flag whether a
 		# short url has been created.
