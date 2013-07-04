@@ -1,0 +1,36 @@
+# Boilerplate configuration for App Engine.
+# https://developers.google.com/appengine/docs/python/config/appconfig
+
+# 'application' defines the unique id used to identify the applicaiton with a 
+# corresponding appliaciton at appengine.google.com.
+application: gdg-url
+
+# 'version' defines the specific version of the current state of the application when
+# uploading to App Engine. Successive uploads overwrite a particular version if it is
+# already uploaded.
+version: alpha-0-1
+
+# 'runtime' specifies what particular vm the application requires to run. In this instance
+# the applicaiton is using the python runtime using the 2.7 version of python.
+runtime: python27
+
+# 'api_version' specifies what version of Google's app engine api the appliation uses. If
+# Google were to change the api in a way to break existing code it would require a different
+# api_version to preserve backward compatiablity.
+api_version: 1
+
+# 'threadsafe' defines whether or not App Engine will use concurrent requests. "True" is
+# required for the python27 runtime.
+threadsafe: true
+
+# 'libraries' defines what exeternal python libraries should be included with the uploaded
+# applicaiton.
+libraries:
+- name: webapp2
+  version: latest
+
+# 'handlers' defines url matching for incoming requests. At this point our regex pattern 
+# matches any requests and directs it to our application object defined in gdg-url.py
+handlers:
+- url: /.*
+  script: gdg-url.short_url
