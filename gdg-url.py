@@ -1,4 +1,11 @@
+import os
+
 import webapp2
+import jinja2
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+	loader=jinja2.FileSystemLoader(os.path.dirname(__file__) + "/tmpl"),
+	extensions=['jinja2.ext.autoescape'])
 
 # Our application must define a request handler for each route defined 
 # in the WSGIApplicaiton. RootPage is defined to handle all requests to 
@@ -12,9 +19,18 @@ class RootPage(webapp2.RequestHandler):
 	def get(self):
 		"""Response for GET requests."""
 
-		# We set the headers to reflect our response and write raw text.
-		self.response.headers['Content-Type'] = 'text/plain'
-		self.response.write('Hello, GDG Missoula')
+		# When rendering the template we pass a dictionary of values that the
+		# template may use. The templates are rendered in a sandbox so local 
+		# scope is not applicable. 
+		#
+		# In this instance the only variable is a conditional flag whether a
+		# short url has been created.
+		template_values = {
+			'created': False,
+		}
+
+		template = JINJA_ENVIRONMENT.get_template("root.html")
+		self.response.write(template.render(template_values))
 
 # We define a global SSGIApplication that is used by our configuartion to
 # route incoming requests to the App Engine. While we are working we enable

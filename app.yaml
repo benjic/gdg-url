@@ -28,6 +28,8 @@ threadsafe: true
 libraries:
 - name: webapp2
   version: latest
+- name: jinja2
+  version: latest
 
 # 'handlers' defines url matching for incoming requests. At this point our regex pattern 
 # matches any requests and directs it to our application object defined in gdg-url.py
