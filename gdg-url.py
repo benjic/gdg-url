@@ -68,9 +68,30 @@ class RootPage(webapp2.RequestHandler):
 		template = JINJA_ENVIRONMENT.get_template("root.html")
 		self.response.write(template.render(template_values))
 
-# We define a global SSGIApplication that is used by our configuartion to
+class ShortUrlPage(webapp2.RequestHandler):
+	"""Accepts route requests for anything but root."""
+
+	# Requests to a short url should only accept GET http methods.
+	def get(self):
+		# The request parses the hash from the path by slicing the string to omit
+		# the leading "\". We ask the datastore for any entity that matches the hash.
+		url = Url.get_by_key_name(self.request.path[1:])
+
+		# If the hash is valid it will return Url Model object else it will return None
+		if url:
+			# The successul return of a url object allows the application to return a 
+			# redirct (301) to the long url.
+			self.redirect("http://" + str(url.link))
+		else:
+			# If there is no short url it is proper to return a 404 as the resource is
+			# not available.
+			self.abort(404)
+
+
+# bu define a global SSGIApplication that is used by our configuartion to
 # route incoming requests to the App Engine. While we are working we enable
 # debugging to promote verbosity.
 short_url = webapp2.WSGIApplication([
-	('/', RootPage)],
+	('/', RootPage),
+	('/.*', ShortUrlPage)],
 	debug=True)
