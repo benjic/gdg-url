@@ -1,7 +1,8 @@
 import os
 import hashlib
 
-from models import Url
+from urllib2 import HTTPError
+from models import Url, BadUrlError
 
 import webapp2
 import jinja2
@@ -50,23 +51,41 @@ class RootPage(webapp2.RequestHandler):
 		url_hash = m.hexdigest()[0:10] 
 
 		# A Url model is instinated with the supplied post data. Our url 
-		# shortner uses a hash as a key to recover created urls.
-		url = Url(key_name=url_hash,
-			link=self.request.get('link'))
+		# shortner uses a hash as a key to recover created urls. To enforce
+		# link vaildation we try to create an entity with the supplied information
+		# and anticipate failures.
+		try:
+			# By instinating an Url entity we call is validate method which ensures
+			# the link is good.
+			url = Url(key_name=url_hash,
+				link=self.request.get('link'))
+		except (HTTPError, BadUrlError), e:
 
-		# Model.put() commits the model to the datastore.
-		url.put()
+			# If the underlying URL functions fail in any way we catch the error and
+			# render the template to include the error message.
 
-		# In this instance the only variable is a conditional flag whether a
-		# short url has been created.
-		template_values = {
-			'created': True,
-			'hostname': os.environ.get('HTTP_HOST'),
-			'hash': url_hash
-		}
+			template_values = {
+				'created': False,
+				'error': e,
+			}
 
-		template = JINJA_ENVIRONMENT.get_template("root.html")
-		self.response.write(template.render(template_values))
+			template = JINJA_ENVIRONMENT.get_template("root.html")
+			self.response.write(template.render(template_values))
+		else:
+
+			# Model.put() commits the model to the datastore.
+			url.put()
+
+			# In this instance the only variable is a conditional flag whether a
+			# short url has been created.
+			template_values = {
+				'created': True,
+				'hostname': os.environ.get('HTTP_HOST'),
+				'hash': url_hash
+			}
+
+			template = JINJA_ENVIRONMENT.get_template("root.html")
+			self.response.write(template.render(template_values))
 
 class ShortUrlPage(webapp2.RequestHandler):
 	"""Accepts route requests for anything but root."""
@@ -81,7 +100,7 @@ class ShortUrlPage(webapp2.RequestHandler):
 		if url:
 			# The successul return of a url object allows the application to return a 
 			# redirct (301) to the long url.
-			self.redirect("http://" + str(url.link))
+			self.redirect(str(url.link))
 		else:
 			# If there is no short url it is proper to return a 404 as the resource is
 			# not available.

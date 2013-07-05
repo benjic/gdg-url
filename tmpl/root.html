@@ -3,6 +3,14 @@
 <html>
 	<body>
 		<h1>GDG Missoula URL Shortner</h1>
+
+		{% if error %}
+		<div id="error">
+			<h2>Error</h2>
+			<p>We were unable to create a short url becuase there was an error in the attempt to fetch your url:</p>
+			<p id="error-text">{{ error }}</p>
+		</div>
+		{% endif %}
 		
 		{% if created %}
 		<div>
