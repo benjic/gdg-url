@@ -34,5 +34,7 @@ libraries:
 # 'handlers' defines url matching for incoming requests. At this point our regex pattern 
 # matches any requests and directs it to our application object defined in gdg-url.py
 handlers:
+- url: /s
+  static_dir: static
 - url: /.*
   script: gdg-url.short_url

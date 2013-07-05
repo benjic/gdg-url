@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% autoescape true %}
 <html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="s/main.css">
 	<body>
 		<h1>GDG Missoula URL Shortner</h1>
 
@@ -13,9 +15,9 @@
 		{% endif %}
 		
 		{% if created %}
-		<div>
-			<h2><a href="http://{{ hostname }}/{{ hash }}">http://{{ hostname }}/{{ hash }}</a></h2>
-			<hr>
+		<div id="link">
+			<h2>Your short Url</h2>
+			<h3><a href="http://{{ hostname }}/{{ hash }}">http://{{ hostname }}/{{ hash }}</a></h3>
 		</div>
 		{% endif %}
 
