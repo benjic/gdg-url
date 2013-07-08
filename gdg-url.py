@@ -91,10 +91,10 @@ class ShortUrlPage(webapp2.RequestHandler):
 	"""Accepts route requests for anything but root."""
 
 	# Requests to a short url should only accept GET http methods.
-	def get(self):
+	def get(self, hash):
 		# The request parses the hash from the path by slicing the string to omit
 		# the leading "\". We ask the datastore for any entity that matches the hash.
-		url = Url.get_by_key_name(self.request.path[1:])
+		url = Url.get_by_key_name(hash)
 
 		# If the hash is valid it will return Url Model object else it will return None
 		if url:
@@ -111,6 +111,6 @@ class ShortUrlPage(webapp2.RequestHandler):
 # route incoming requests to the App Engine. While we are working we enable
 # debugging to promote verbosity.
 short_url = webapp2.WSGIApplication([
-	('/', RootPage),
-	('/.*', ShortUrlPage)],
+	webapp2.Route(r'/', handler=RootPage),
+	webapp2.Route(r'/<hash:.*>', handler=ShortUrlPage)],
 	debug=True)
