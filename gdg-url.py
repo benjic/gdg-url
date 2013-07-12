@@ -4,6 +4,8 @@ import hashlib
 from urllib2 import HTTPError
 from models import Url, BadUrlError
 
+from google.appengine.api import memcache
+
 import webapp2
 import jinja2
 
@@ -31,6 +33,9 @@ class RootPage(webapp2.RequestHandler):
 		# short url has been created.
 		template_values = {
 			'created': False,
+			'hostname': os.environ.get('HTTP_HOST'),
+			'urls': Url.all().order('-timestamp').fetch(limit=10)
+
 		}
 
 		template = JINJA_ENVIRONMENT.get_template("root.html")
@@ -67,6 +72,8 @@ class RootPage(webapp2.RequestHandler):
 			template_values = {
 				'created': False,
 				'error': e,
+				'hostname': os.environ.get('HTTP_HOST'),
+				'urls': Url.all().order('-timestamp').fetch(limit=10)
 			}
 
 			template = JINJA_ENVIRONMENT.get_template("root.html")
@@ -80,8 +87,9 @@ class RootPage(webapp2.RequestHandler):
 			# short url has been created.
 			template_values = {
 				'created': True,
+				'hash': url_hash,
 				'hostname': os.environ.get('HTTP_HOST'),
-				'hash': url_hash
+				'urls': Url.all().order('-timestamp').fetch(limit=10)
 			}
 
 			template = JINJA_ENVIRONMENT.get_template("root.html")

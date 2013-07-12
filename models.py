@@ -41,3 +41,4 @@ class Url(db.Model):
 
 	# The link is stored as a string
 	link = ValidLinkProperty(required=True)
+	timestamp = db.DateTimeProperty(auto_now_add=True)
