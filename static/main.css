@@ -1,15 +1,4 @@
-/* Minimal CSS */
-#error, #link {
-	padding: 5px;
-	margin: 10px;
-	margin-left: 20px;
+#logo {
+	height: 90px;
 }
-
-#error {
-	border: red solid thin;
-	background: lightgoldenrodyellow;
-}
-
-#link {
-	border: black solid thin;
-}
+form { margin: 0px; }

@@ -2,12 +2,13 @@
 {% autoescape true %}
 <html>
 	<head>
+		<link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="s/main.css">
 	<body>
-		<h1>GDG Missoula URL Shortner</h1>
+		<h1><img src="s/gdgmso.png" id="logo"/> URL Shortner</h1>
 
 		{% if error %}
-		<div id="error">
+		<div class="alert alert-error">
 			<h2>Error</h2>
 			<p>We were unable to create a short url becuase there was an error in the attempt to fetch your url:</p>
 			<p id="error-text">{{ error }}</p>
@@ -21,17 +22,32 @@
 		</div>
 		{% endif %}
 
-		<form action="/" method="POST">
-			<div>
-				<label for="text">Link</label>
-				<input type="text" name="link" id="text"></text>
-			</div>
-			<div>
-				<input type="submit" value="Shorten">
-			</div>
-		</form>
-
+		<!-- Place to enter a new URL to be shortened -->
+		<div class="well pull-left">
+			<form action="/" method="POST" class="form-inline">
+				<label class=bold>
+					Paste your long URL here:
+					<br>
+					<input type="text" name="link" id="text"></text>
+				</label>
+				<input type="submit" value="Shorten URL" class="btn btn-primary">
+			</form>
+		</div>
 		<!-- TODO: Create a list of recent shortened urls. -->
+
+		<table class="table table-striped">
+			<tr>
+				<th>LONG URL</th>
+				<th>CREATED</th>
+				<th>SHORT URL</th>
+			</tr>
+			<!-- repeat this table row for each short URL in our datastore-->
+			<tr>
+				<td>Example</td>
+				<td>Today</td>
+				<td>url</td>
+			</tr>
+		</table>
 
 	</body>
 </html>
