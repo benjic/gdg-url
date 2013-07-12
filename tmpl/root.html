@@ -4,13 +4,14 @@
 	<head>
 		<link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="s/main.css">
+		<title>GDG-Url -- GDG Missoula</title>
 	<body>
-		<h1><img src="s/gdgmso.png" id="logo"/> URL Shortner</h1>
+		<h1><img src="s/gdgmso.png" id="logo"/> URL Shortener</h1>
 
 		{% if error %}
 		<div class="alert alert-error">
 			<h2>Error</h2>
-			<p>We were unable to create a short url becuase there was an error in the attempt to fetch your url:</p>
+			<p>We were unable to create a short URL because there was an error in the attempt to fetch your URL:</p>
 			<p id="error-text">{{ error }}</p>
 		</div>
 		{% endif %}
