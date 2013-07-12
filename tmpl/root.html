@@ -42,11 +42,13 @@
 				<th>SHORT URL</th>
 			</tr>
 			<!-- repeat this table row for each short URL in our datastore-->
+			{% for url in urls %}
 			<tr>
-				<td>Example</td>
-				<td>Today</td>
-				<td>url</td>
+				<td>{{ url.link }}</td>
+				<td>{{ url.timestamp }}</td>
+				<td><a href="http://{{ hostname }}/{{ url.key().name() }}">http://{{ hostname }}/{{ url.key().name() }}</a></td>
 			</tr>
+			{% endfor %}
 		</table>
 
 	</body>
